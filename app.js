@@ -9,9 +9,14 @@ const rgbButton = document.querySelector('.rgb');
 //grid resizing function 
 
 function gridResize(userInput = parseInt(prompt('select grid size 1-100'))) {
-    container.style.gridTemplateRows = `repeat(${userInput}, 1fr)`;
-    container.style.gridTemplateColumns = `repeat(${userInput}, 1fr)`;
-    createGrid(userInput);
+    if(userInput <= 100) {
+        container.style.gridTemplateRows = `repeat(${userInput}, 1fr)`;
+        container.style.gridTemplateColumns = `repeat(${userInput}, 1fr)`;
+        createGrid(userInput);
+    }
+    else {
+        alert("That's not a valid input"); 
+    }
 };
 
 //creating the grid
@@ -22,8 +27,20 @@ function createGrid (size) {
 
     for(let i = 0; i < size*size; i++) {
         let gridBox = document.createElement('div');
+        gridBox.classList.add('box');
         gridBox.style.cssText = 'border: 0.25px solid black';
         container.appendChild(gridBox);
+
+        //clear grid color
+        
+        function clearGrid() {
+            let boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.style.backgroundColor = null;
+            });
+        };
+        
+        clearButton.addEventListener('click', clearGrid);
 
         blackButton.addEventListener('click', () => {
             gridBox.addEventListener('click', e => {
@@ -41,15 +58,6 @@ function createGrid (size) {
         };
         rgbButton.addEventListener('click', makeRandomColor);
     };
-
-    //clearing the grid     
-
-    function clearGrid() {
-        clearButton.addEventListener('click', e => {
-            gridBox.style.cssText = 'border: 0.25px solid black';
-        });
-    };
-    clearGrid();
 };
 
 createGrid(gridResize());

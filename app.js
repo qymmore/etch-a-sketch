@@ -1,35 +1,55 @@
 const container = document.querySelector('#container');
 
-//buttons
+//button declaration
+
 const clearButton = document.querySelector('.clear');
 const blackButton = document.querySelector('.black');
 const rgbButton = document.querySelector('.rgb');
 
-//create 16x16 grid
+//grid resizing function 
 
-for(let i = 1; i <= 256; i++) {
-    const div = document.createElement('div');
-    div.style.cssText = 'border: 0.25px solid black; height: 25px; width: 25px';
-    div.classList.add('box');
-    div.textContent = '';
-    container.appendChild(div);
+function gridResize(userInput = parseInt(prompt('select grid size 1-100'))) {
+    container.style.gridTemplateRows = `repeat(${userInput}, 1fr)`;
+    container.style.gridTemplateColumns = `repeat(${userInput}, 1fr)`;
+    createGrid(userInput);
+};
 
-    const boxes = document.querySelectorAll('.box');
+//creating the grid
 
-    //random color generator for RGB button
-    const makeRandomColor = () => {
-        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        div.addEventListener('click', e => {
-            div.style.backgroundColor = "#" + randomColor;
+function createGrid (size) {
+    container.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+
+    for(let i = 0; i < size*size; i++) {
+        let gridBox = document.createElement('div');
+        gridBox.style.cssText = 'border: 0.25px solid black';
+        container.appendChild(gridBox);
+
+        blackButton.addEventListener('click', () => {
+            gridBox.addEventListener('click', e => {
+                gridBox.style.backgroundColor = 'black';
+            });
         });
+
+        //random color generator
+
+        const makeRandomColor = () => {
+            const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+            gridBox.addEventListener('click', e => {
+                gridBox.style.backgroundColor = '#' + randomColor;
+            });
+        };
+        rgbButton.addEventListener('click', makeRandomColor);
     };
 
-    //add eventListener for color change
-    rgbButton.addEventListener('click', makeRandomColor);
+    //clearing the grid     
 
-    blackButton.addEventListener('click', () => {
-        div.addEventListener('click', e => {
-            div.style.backgroundColor = 'black';
+    function clearGrid() {
+        clearButton.addEventListener('click', e => {
+            gridBox.style.cssText = 'border: 0.25px solid black';
         });
-    });
+    };
+    clearGrid();
 };
+
+createGrid(gridResize());

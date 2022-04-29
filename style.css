@@ -3,6 +3,8 @@
 }
 
 #container {
+    width: 550px;
+    height: 550px;
+    background-color: white;
     display: grid;
-    grid-template-columns: repeat(16,25px [col-start]);
 }

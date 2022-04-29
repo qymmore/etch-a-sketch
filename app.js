@@ -6,6 +6,8 @@ const clearButton = document.querySelector('.clear');
 const blackButton = document.querySelector('.black');
 const rgbButton = document.querySelector('.rgb');
 
+const colorInput = document.querySelector('.color');
+
 //grid resizing function 
 
 function gridResize(userInput = parseInt(prompt('select grid size 1-100'))) {
@@ -48,6 +50,15 @@ function createGrid (size) {
             });
         });
 
+        //adds a color wheel 
+
+        colorInput.addEventListener('input', () => {
+            let colorValue = colorInput.value;
+            gridBox.addEventListener('click', e => {
+                gridBox.style.backgroundColor = colorValue;
+            });
+        });
+
         //random color generator
 
         const makeRandomColor = () => {
@@ -58,6 +69,7 @@ function createGrid (size) {
         };
         rgbButton.addEventListener('click', makeRandomColor);
     };
+
 };
 
 createGrid(gridResize());
